@@ -1,0 +1,24 @@
+
+{
+    "name": "proj-lms",
+    "version": "1.0.0",
+    "description": "Learning Management System Course Project",
+    "main": "backend/server.js",
+    "scripts": {
+      "start": "node backend/server.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "lms",
+      "express",
+      "mongodb"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "body-parser": "^1.20.2", 
+      "express": "^4.19.2",
+      "express-session": "^1.18.0", 
+      "mongoose": "^8.3.4"
+    }
+  }

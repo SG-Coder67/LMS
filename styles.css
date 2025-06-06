@@ -1,0 +1,125 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+.container {
+    background: white;
+    padding: 30px 40px;
+    margin: 5% auto; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.container h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.container input[type="text"],
+.container input[type="password"],
+.container input[type="email"],
+.container select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.container button {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+    font-weight: bold;
+}
+
+.container button:hover {
+    background: #0056b3;
+}
+
+.container .error {
+    color: #dc3545;
+    font-size: 0.85em;
+    text-align: left;
+    min-height: 1.2em; 
+    margin-bottom: 10px;
+}
+.container .message { 
+    font-size: 0.9em;
+    margin-top: 10px;
+    min-height: 1.2em;
+    text-align: left;
+}
+.container .success { color: #28a745; font-weight: bold; }
+
+
+.container p {
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+.container form div {
+    margin-bottom: 10px; 
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+header h1 { margin: 0; font-size: 1.6em; }
+#userInfo { font-size: 0.9em; margin-right: 15px; }
+#logoutBtn { background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.9em;}
+#logoutBtn:hover { background-color: #c82333; }
+
+main { padding: 25px; max-width: 1300px; margin: 20px auto; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+.dashboard-box, .section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+.dashboard-box h3, .section h3 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 18px; color: #0056b3; font-size: 1.25em;}
+
+ul { list-style: none; padding: 0; margin: 0; }
+li { background: #f8f9fa; margin-bottom: 10px; padding: 12px 15px; border-radius: 5px; border: 1px solid #e9ecef; transition: background-color 0.2s; }
+li:hover { background-color: #e9ecef; }
+li strong { color: #343a40; }
+.error { color: #dc3545; font-size: 0.9em; }
+.success { color: #28a745; font-weight: bold; font-size: 0.9em; }
+.loading { color: #6c757d; font-style: italic; }
+.no-data { color: #6c757d; padding: 10px 0; }
+.message { min-height: 1.2em; margin-top: 5px; display: block; font-size: 0.9em; text-align: left;}

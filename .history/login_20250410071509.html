@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LMS Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #0f2027;
+            background-image: url('11.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(4px);
+        }
+
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 0.6s ease-in-out;
+            z-index: 2;
+            color: #fff;
+            position: relative;
+        }
+
+        .graduation-icon {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background-color: #1b2735;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .graduation-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        input:focus {
+            border: 2px solid #4b6cb7;
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 5px;
+            height: 14px;
+        }
+
+        button {
+            background: #4b6cb7;
+            color: #fff;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #3a589d;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .bottom-text a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .bottom-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                margin: 20px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <div class="login-container">
+        <h2>Welcome</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required />
+                <div class="error" id="usernameError"></div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required autocomplete="off" />
+                <div class="error" id="passwordError"></div>
+            </div>
+            <div class="error" id="loginError"></div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="bottom-text">
+            Don't have an account? <a href="register.html">Register</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let username = document.getElementById("username").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let usernameError = document.getElementById("usernameError");
+            let passwordError = document.getElementById("passwordError");
+            let loginError = document.getElementById("loginError");
+            usernameError.textContent = "";
+            passwordError.textContent = "";
+            loginError.textContent = "";
+            if (username.length > 16) {
+                usernameError.textContent = "Username must be less than 16 characters";
+                return;
+            }
+            if (password.length < 8 || password.length > 16) {
+                passwordError.textContent = "Password must be between 8 and 16 characters";
+                return;
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/auth/login", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.withCredentials = true;
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    let responseText = xhr.responseText;
+                    let data = {};
+                    try {
+                        data = responseText ? JSON.parse(responseText) : {};
+                    } catch (e) {
+                        console.error("Failed to parse response:", responseText);
+                        loginError.textContent = "An unexpected error occurred. Please try again.";
+                        return;
+                    }
+                    if (xhr.status === 200 && data.msg === "Login successful") {
+                        if (data.role === "student") {
+                            window.location.href = "/student_dashboard.html";
+                        } else if (data.role === "teacher") {
+                            window.location.href = "/teacher_dashboard.html";
+                        } else {
+                            loginError.textContent = "Login successful, but role unknown. Cannot redirect.";
+                        }
+                    } else {
+                        loginError.textContent = data.msg || "Login failed. Please check username and password.";
+                        console.error("Login failed:", data.msg || xhr.status);
+                    }
+                }
+            };
+            xhr.onerror = function () {
+                loginError.textContent = "Network error occurred. Please check your connection.";
+            };
+            xhr.send(JSON.stringify({ username, password }));
+        });
+    </script>
+</body>
+
+</html>

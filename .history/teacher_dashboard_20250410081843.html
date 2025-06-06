@@ -1,0 +1,1721 @@
+<html>
+
+<head>
+    <title>Teacher Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17a2b8;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --lighter-bg: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #343a40;
+            --text-muted: #6c757d;
+            --font-primary: 'Lato', sans-serif;
+            --font-secondary: 'Poppins', sans-serif;
+            --border-radius: 6px;
+            --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+            --box-shadow-hover: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            margin: 0;
+            background-color: #f4f7f6;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--lighter-bg);
+            color: var(--text-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.7em;
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        #userInfo {
+            font-size: 0.95em;
+            color: var(--text-muted);
+            margin-right: 15px;
+        }
+
+        main {
+            padding: 30px;
+            max-width: 1300px;
+            margin: 30px auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .section {
+            background: var(--lighter-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .section h3 {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.25em;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .section h4 {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 25px 0;
+        }
+
+        form {
+            margin-top: 15px;
+        }
+
+        #courseSelectionForAssignment,
+        #assignmentSelectionForSubmissions,
+        #courseSelectionForSubmissions,
+        #courseSelectionForAttendance,
+        #studentSelectForAttendance {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="datetime-local"],
+        textarea,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-primary);
+            font-size: 0.95em;
+            background-color: var(--lighter-bg);
+            color: var(--text-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="12" height="8" fill="%236c757d" xmlns="http://www.w3.org/2000/svg" ><path d="M6 7.4.3 1.7C-.1 1.3-.1.7.3.3s1-.4 1.4 0L6 4.6 10.3.3c.4-.4 1-.4 1.4 0s.4 1 
+ 0 1.4L6 7.4z"/></svg>');
+ background-repeat: no-repeat;
+                    background-position: right 12px center;
+                    background-size: 12px;
+                    padding-right: 35px;
+            }
+
+            select:disabled {
+                background-color: #e9ecef;
+                opacity: 0.7;
+            }
+
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: var(--border-radius);
+                cursor: pointer;
+                font-size: 0.95em;
+                font-weight: 500;
+                font-family: var(--font-secondary);
+                transition: background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+                text-transform: capitalize;
+                margin-top: 5px;
+            }
+
+            button:hover:not(:disabled) {
+                opacity: 0.85;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            #logoutBtn {
+                background-color: var(--danger-color);
+                color: white;
+                padding: 8px 15px;
+            }
+
+            #logoutBtn:hover {
+                background-color: #c82333;
+                opacity: 1;
+            }
+
+            #createCourseForm button,
+            #createAssignmentForm button,
+            #attendanceForm button {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+            #createCourseForm button:hover:not(:disabled),
+            #createAssignmentForm button:hover:not(:disabled),
+            #attendanceForm button:hover:not(:disabled) {
+                background-color: #004085;
+                opacity: 1;
+            }
+
+            .grade-button {
+                background-color: var(--success-color);
+                color: white;
+                font-size: 0.85em;
+                padding: 5px 10px;
+                vertical-align: middle;
+            }
+
+            .grade-button:hover:not(:disabled) {
+                background-color: #218838;
+                opacity: 1;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 15px 0 0 0;
+            }
+
+            li {
+                background-color: var(--light-bg);
+                margin-bottom: 10px;
+                padding: 12px 15px;
+                border-radius: 4px;
+                border: 1px solid #e9ecef;
+                transition: background-color 0.2s ease;
+            }
+
+            li:not(.no-data):not(.loading):hover {
+                background-color: #eef1f3;
+            }
+
+            li:last-child {
+                margin-bottom: 0;
+            }
+
+            li strong {
+                color: var(--text-color);
+                font-weight: 700;
+            }
+
+            .submission-item {
+                border-left: 4px solid var(--primary-color);
+                padding-left: 15px;
+                background-color: var(--lighter-bg);
+            }
+
+            .submission-item span {
+                margin-right: 15px;
+                display: inline-block;
+                margin-bottom: 5px;
+                font-size: 0.9em;
+                color: var(--text-muted);
+            }
+
+            .submission-item span strong {
+                color: var(--text-color);
+                font-size: 1.1em;
+            }
+
+            .submission-item p {
+                margin: 10px 0 15px 0;
+                padding: 10px;
+                background-color: var(--light-bg);
+                border: 1px solid #eee;
+                border-radius: 4px;
+                font-size: 0.95em;
+                color: var(--text-color);
+                max-height: 100px;
+                overflow-y: auto;
+            }
+
+            .submission-item p em {
+                font-weight: bold;
+                color: var(--text-muted);
+                font-style: normal;
+                margin-right: 5px;
+            }
+
+            .submission-item div {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px dashed var(--border-color);
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .submission-item label {
+                display: inline-block;
+                margin-bottom: 0;
+                font-weight: normal;
+                font-size: 0.9em;
+                color: var(--text-muted);
+            }
+
+            .marks-input {
+                width: 75px !important;
+                padding: 6px 8px !important;
+                display: inline-block;
+                vertical-align: middle;
+                margin: 0 !important;
+            }
+
+            .message {
+                font-size: 0.85em;
+                margin-left: 5px;
+                vertical-align: middle;
+                display: inline-block;
+                padding: 3px 6px;
+                border-radius: 3px;
+            }
+
+            .message:empty {
+                display: none;
+            }
+
+            .message.success {
+                color: #155724;
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                font-weight: bold;
+            }
+
+            .message.error {
+                color: #721c24;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+            }
+
+            .message.loading {
+                color: var(--text-muted);
+                font-style: italic;
+                background-color: transparent;
+                border: none;
+            }
+
+            .section .error,
+            .section .success {
+                padding: 10px 15px;
+                margin-top: 15px;
+                border-radius: var(--border-radius);
+                font-size: 0.95em;
+            }
+
+            .section .error {
+                color: #721c24;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+            }
+
+            .section .success {
+                color: #155724;
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+            }
+
+            .loading,
+            .no-data {
+                color: var(--text-muted);
+                font-style: italic;
+                text-align: center;
+                padding: 20px 15px;
+            }
+
+            li.loading,
+            li.no-data {
+                border: none;
+                background-color: transparent !important;
+                text-align: center;
+                padding: 20px 0;
+            }
+
+            li.loading:hover,
+            li.no-data:hover {
+                background-color: transparent !important;
+            }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Teacher Dashboard</h1>
+        <div>
+            <span id="userInfo">Loading...</span>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </header>
+    <main>
+        <div class="dashboard-grid">
+            <div class="section" id="course-management">
+                <h3>My Courses</h3>
+                <ul id="teacherCourseList">
+                    <li class="loading">Loading courses...</li>
+                </ul>
+                <hr>
+                <h4>Create New Course</h4>
+                <form id="createCourseForm">
+                    <div>
+                        <label for="courseName">Course Name:</label>
+                        <input type="text" id="courseName" placeholder="e.g., Introduction to Programming" required>
+                    </div>
+                    <div>
+                        <label for="courseDesc">Description:</label>
+                        <textarea id="courseDesc" placeholder="Brief description of the course" required></textarea>
+                    </div>
+                    <div id="createCourseMessage" class="message"></div>
+                    <button type="submit">Create Course</button>
+                </form>
+            </div>
+            <div class="section" id="assignment-management">
+                <h3>Assignment Management</h3>
+                <div id="courseSelectionForAssignment">
+                    <label for="courseSelectForAssignment">Select Course:</label>
+                    <select id="courseSelectForAssignment" required>
+                        <option value="">-- Select a Course --</option>
+                    </select>
+                </div>
+                <hr>
+                <h4>Create New Assignment</h4>
+                <form id="createAssignmentForm">
+                    <div>
+                        <label for="assignmentTitle">Title:</label>
+                        <input type="text" id="assignmentTitle" placeholder="e.g., Homework 1" required>
+                    </div>
+                    <div>
+                        <label for="assignmentDesc">Description:</label>
+                        <textarea id="assignmentDesc" placeholder="Instructions for the assignment" required></textarea>
+                    </div>
+                    <div>
+                        <label for="assignmentDueDate">Due Date:</label>
+                        <input type="datetime-local" id="assignmentDueDate" required>
+                    </div>
+                    <div>
+                        <label for="assignmentTotalMarks">Total Marks:</label>
+                        <input type="number" id="assignmentTotalMarks" value="100" min="0" required>
+                    </div>
+                    <div id="createAssignmentMessage" class="message"></div>
+                    <button type="submit">Create Assignment</button>
+                </form>
+                <hr>
+                <h4>View Assignments</h4>
+                <ul id="courseAssignmentList">
+                    <li class="no-data">Select a course to view assignments.</li>
+                </ul>
+            </div>
+            <div class="section" id="submissions-grading">
+                <h3>Submissions & Grading</h3>
+                <div id="courseSelectionForSubmissions">
+                    <label for="courseSelectForSubmissions">Select Course:</label>
+                    <select id="courseSelectForSubmissions" required>
+                        <option value="">-- Select Course --</option>
+                    </select>
+                </div>
+                <div id="assignmentSelectionForSubmissions">
+                    <label for="assignmentSelectForSubmissions">Select Assignment:</label>
+                    <select id="assignmentSelectForSubmissions" required disabled>
+                        <option value="">-- Select Assignment --</option>
+                    </select>
+                </div>
+                <hr>
+                <h4>Student Submissions</h4>
+                <ul id="submissionGradingList">
+                    <li class="no-data">Select an assignment to view submissions.</li>
+                </ul>
+            </div>
+            <div class="section" id="mark-attendance">
+                <h3>Mark Attendance</h3>
+                <div id="courseSelectionForAttendance">
+                    <label for="courseSelectForAttendance">Select Course:</label>
+                    <select id="courseSelectForAttendance" required>
+                        <option value="">-- Select Course --</option>
+                    </select>
+                </div>
+                <hr>
+                <form id="attendanceForm">
+                    <div>
+                        <label for="studentSelectForAttendance">Select Student:</label>
+                        <select id="studentSelectForAttendance" required disabled>
+                            <option value="">-- Select Student --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="attendanceDate">Date:</label>
+                        <input type="date" id="attendanceDate" name="date" required>
+                    </div>
+                    <div>
+                        <label for="attendanceStatus">Status:</label>
+                        <select id="attendanceStatus" name="status" required>
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </div>
+                    <div id="markAttendanceMessage" class="message"></div>
+                    <button type="submit">Mark Attendance</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script>
+        let teacherCourses = [];
+        let currentUsername = '';
+        function makeApiCall(method, url, data, callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.withCredentials = true;
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    let responseData = null; let errorMsg = null;
+                    try { responseData = xhr.responseText ? JSON.parse(xhr.responseText) : null; } catch (e) {
+                        errorMsg = "Invalid server 
+                        response."; }
+                        if (xhr.status >= 200 && xhr.status < 300) { callback(null, responseData); }
+                        else {
+                            if (xhr.status === 401 || xhr.status === 403) {
+                                alert("Session expired/access denied."); window.location.href =
+                                    "/login.html"; return;
+                            }
+                            errorMsg = (responseData && responseData.msg) || errorMsg || `Error ${xhr.status}`; callback(errorMsg, null);
+                        }
+                    }
+                };
+                xhr.onerror = function () { callback("Network error.", null); };
+                xhr.send(data ? JSON.stringify(data) : null);
+            }
+            function formatDate(dateString) {
+                if (!dateString) return 'N/A'; try { return new Date(dateString).toLocaleString(); } catch
+                (e) { return dateString; }
+            }
+            function displayMessage(elementId, message, isError = false) {
+                const el = document.getElementById(elementId);
+                if (el) {
+                    el.textContent = message;
+                    el.className = isError ? 'error message' : 'success message';
+                }
+            }
+            function populateSelect(selectElementId, optionsData, valueField, textField, prompt = "-- Select --") {
+                const select = document.getElementById(selectElementId);
+                if (!select) return;
+                select.innerHTML = `<option value="">${prompt}</option>`;
+                if (optionsData && optionsData.length > 0) {
+                    optionsData.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item[valueField];
+                        option.textContent = item[textField];
+                        select.appendChild(option);
+                    });
+                    select.disabled = false;
+                } else {
+                    select.disabled = true;
+                }
+            }
+            function loadTeacherDashboard() {
+                makeApiCall("GET", "/api/auth/session", null, (err, sessionData) => {
+                    const userInfo = document.getElementById("userInfo");
+                    if (err || !sessionData || !sessionData.user) {
+                        userInfo.textContent = "Welcome!";
+                    } else {
+                        currentUsername = sessionData.user.username;
+                        userInfo.textContent = `Welcome, ${currentUsername}! (Teacher)`;
+                        fetchTeacherCoursesAndPopulateSelects();
+                    }
+                });
+            }
+            function fetchTeacherCoursesAndPopulateSelects() {
+                makeApiCall("GET", "/api/teacher/courses", null, (err, courses) => {
+                    const listElement = document.getElementById("teacherCourseList");
+                    if (err) {
+                        listElement.innerHTML = `<li class="error">Error loading courses: ${err}</li>`;
+                    } else {
+                        teacherCourses = courses || [];
+                        renderList("teacherCourseList", teacherCourses, (course) => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<strong>${course.name}</strong> - Created: ${formatDate(course.createdAt)}`;
+                            return li;
+                        }, "You have not created any courses yet.");
+                        populateSelect("courseSelectForAssignment", teacherCourses, '_id', 'name', '-- Select Course for Assignment --');
+                        populateSelect("courseSelectForSubmissions", teacherCourses, '_id', 'name', '-- Select Course for Submissions --');
+                        populateSelect("courseSelectForAttendance", teacherCourses, '_id', 'name', '-- Select Course for Attendance --');
+                        setupCourseSelectionListeners();
+                    }
+                });
+            }
+            document.getElementById("createCourseForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const name = document.getElementById("courseName").value;
+                const description = document.getElementById("courseDesc").value;
+                const msgDiv = "createCourseMessage";
+                displayMessage(msgDiv, "Creating course...", false);
+                makeApiCall("POST", "/api/teacher/courses", { name, description }, (err, result) => {
+                    if (err) {
+                        displayMessage(msgDiv, `Error: ${err}`, true);
+                    } else {
+                        displayMessage(msgDiv, result.msg || "Course created!", false);
+                        document.getElementById("createCourseForm").reset();
+                        fetchTeacherCoursesAndPopulateSelects();
+                    }
+                });
+            });
+            function fetchAssignmentsForCourse(courseId, listElementId) {
+                makeApiCall("GET", `/api/courses/${courseId}/assignments`, null, (err, assignments) => {
+                    const listElement = document.getElementById(listElementId);
+                    if (err) {
+                        listElement.innerHTML = `<li class="error">Error loading assignments: ${err}</li>`;
+                    } else {
+                        renderList(listElementId, assignments, (assign) => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+<strong>${assign.title}</strong> - Due: ${formatDate(assign.dueDate)}
+<p>${assign.description || 'No description'}</p>
+`;
+                            return li;
+                        }, "No assignments found for this course.");
+                    }
+                });
+            }
+            function fetchAssignmentsAndPopulateSelect(courseId, selectElementId) {
+                makeApiCall("GET", `/api/courses/${courseId}/assignments`, null, (err, assignments) => {
+                    const selectEl = document.getElementById(selectElementId);
+                    if (err || !assignments) {
+                        console.error("Error fetching assignments for select:", err);
+                        populateSelect(selectElementId, [], '_id', 'title', '-- Error Loading Assignments --');
+                        selectEl.disabled = true;
+                    } else {
+                        populateSelect(selectElementId, assignments, '_id', 'title', '-- Select Assignment --');
+                        selectEl.disabled = assignments.length === 0;
+                    }
+                });
+            }
+            document.getElementById("createAssignmentForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const courseId = document.getElementById("courseSelectForAssignment").value;
+                if (!courseId) {
+                    displayMessage("createAssignmentMessage", "Please select a course first.", true);
+                    return;
+                }
+                const title = document.getElementById("assignmentTitle").value;
+                const description = document.getElementById("assignmentDesc").value;
+                const dueDate = document.getElementById("assignmentDueDate").value;
+                const totalMarks = document.getElementById("assignmentTotalMarks").value;
+                const msgDiv = "createAssignmentMessage";
+                displayMessage(msgDiv, "Creating assignment...", false);
+                makeApiCall("POST", `/api/teacher/courses/${courseId}/assignments`, { title, description, dueDate, totalMarks }, (err,
+                    result) => {
+                    if (err) {
+                        displayMessage(msgDiv, `Error: ${err}`, true);
+                    } else {
+                        displayMessage(msgDiv, result.msg || "Assignment created!", false);
+                        document.getElementById("createAssignmentForm").reset();
+                        const selectedCourseList = document.getElementById("courseSelectForAssignment").value;
+                        if (selectedCourseList === courseId) {
+                            fetchAssignmentsForCourse(courseId, 'courseAssignmentList');
+                        }
+                    }
+                });
+            });
+            function renderList(listElementId, data, renderItemFn, noDataMsg = "No data available.") {
+                const listElement = document.getElementById(listElementId);
+                if (!listElement) {
+                    console.error("renderList: Element not found:", listElementId);
+                    return;
+                }
+                listElement.innerHTML = '';
+                if (!data || data.length === 0) {
+                    listElement.innerHTML = `<li class="no-data">${noDataMsg}</li>`;
+                } else {
+                    data.forEach(item => {
+                        const li = renderItemFn(item);
+                        if (li instanceof HTMLElement) {
+                            listElement.appendChild(li);
+                        } else {
+                            console.warn("renderItemFn did not return a valid HTML element for item:", item);
+                        }
+                    });
+                }
+            }
+            function fetchSubmissionsForGrading(assignmentId) {
+                const listElement = document.getElementById("submissionGradingList");
+                listElement.innerHTML = '<li class="loading">Loading submissions...</li>';
+                makeApiCall("GET", `/api/teacher/assignments/${assignmentId}/submissions`, null, (err, submissions) => {
+                    if (err) {
+                        listElement.innerHTML = `<li class="error">Error loading submissions: ${err}</li>`;
+                    } else {
+                        renderList("submissionGradingList", submissions, (sub) => {
+                            const li = document.createElement('li');
+                            li.classList.add('submission-item');
+                            li.id = `submission-${sub._id}`;
+                            const studentName = sub.student ? (sub.student.name || sub.student.username) : 'Unknown Student';
+                            const currentMark = sub.mark ? sub.mark.marks : '';
+                            const totalMarks = sub.mark ? sub.mark.totalMarks : (sub.assignment ? sub.assignment.totalMarks : 100);
+                            li.innerHTML = `
+<span><strong>${studentName}</strong></span>
+<span>Submitted: ${formatDate(sub.submittedAt)}</span>
+<p><em>Content:</em> ${sub.content ? sub.content.substring(0, 150) + (sub.content.length > 150 ? '...' : '') : '(No 
+Content)'}</p>
+                            < div >
+<label for="marks-${sub._id}">Mark:</label>
+<input type="number" class="marks-input" id="marks-${sub._id}" value="${currentMark}" placeholder="-" min="0" 
+max="${totalMarks}"> / ${totalMarks}
+<button class="grade-button" onclick="gradeSubmission('${sub._id}', '${totalMarks}')">
+${sub.mark ? 'Update' : 'Grade'}
+</button>
+<span id="grade-message-${sub._id}" class="message" style="margin-left: 10px;"></span>
+</div>
+                        `;
+return li;
+}, "No submissions found for this assignment.");
+}
+});
+}
+function gradeSubmission(submissionId, totalMarks) {
+const marksInput = document.getElementById(`marks - ${ submissionId } `);
+const marks = marksInput.value;
+const messageSpan = document.getElementById(`grade - message - ${ submissionId } `);
+if (marks === '' || isNaN(marks)) {
+messageSpan.textContent = "Invalid mark";
+messageSpan.className = 'error message';
+return;
+}
+const marksNum = Number(marks);
+if (marksNum < 0 || marksNum > Number(totalMarks)) {
+messageSpan.textContent = `Mark must be 0 - ${ totalMarks } `;
+messageSpan.className = 'error message';
+return;
+}
+messageSpan.textContent = "Saving...";
+messageSpan.className = 'loading message';
+makeApiCall("POST", `/ api / teacher / submissions / ${ submissionId }/mark`, { marks: marksNum }, (err, result) => {
+                        if (err) {
+                            messageSpan.textContent = `Error: ${err}`;
+                            messageSpan.className = 'error message';
+                        } else {
+                            messageSpan.textContent = "Saved!";
+                            messageSpan.className = 'success message';
+                            const button = marksInput.nextElementSibling;
+                            if (button) button.textContent = 'Update';
+                            setTimeout(() => { messageSpan.textContent = ''; messageSpan.className = 'message'; }, 3000);
+                        }
+                    });
+            }
+            function fetchStudentsForCourse(courseId, selectElementId) {
+                makeApiCall("GET", `/api/teacher/courses/${courseId}/students`, null, (err, students) => {
+                    const selectEl = document.getElementById(selectElementId);
+                    if (err || !students) {
+                        console.error("Error fetching students for select:", err);
+                        populateSelect(selectElementId, [], '_id', 'username', '-- Error Loading Students --');
+                        selectEl.disabled = true;
+                    } else {
+                        populateSelect(selectElementId, students, 'username', 'username', '-- Select Student --'); // Use username as value
+                        selectEl.disabled = students.length === 0;
+                    }
+                });
+            }
+            document.getElementById("attendanceForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const courseId = document.getElementById("courseSelectForAttendance").value;
+                const studentUsername = document.getElementById("studentSelectForAttendance").value;
+                const date = document.getElementById("attendanceDate").value;
+                const status = document.getElementById("attendanceStatus").value;
+                const msgDiv = "markAttendanceMessage";
+                if (!courseId || !studentUsername || !date || !status) {
+                    displayMessage(msgDiv, "Please fill in all fields.", true);
+                    return;
+                }
+                displayMessage(msgDiv, "Marking attendance...", false);
+                makeApiCall("POST", `/api/teacher/courses/${courseId}/attendance`, { studentUsername, date, status }, (err, result) => {
+                    if (err) {
+                        displayMessage(msgDiv, `Error: ${err}`, true);
+                    } else {
+                        displayMessage(msgDiv, result.msg || "Attendance marked!", false);
+                    }
+                });
+            });
+            function setupCourseSelectionListeners() {
+                document.getElementById('courseSelectForAssignment').addEventListener('change', function () {
+                    const courseId = this.value;
+                    if (courseId) {
+                        fetchAssignmentsForCourse(courseId, 'courseAssignmentList');
+                    } else {
+                        document.getElementById('courseAssignmentList').innerHTML = '<li class="no-data">Select a course to view 
+                        assignments.</li > ';
+                    }
+                });
+                document.getElementById('courseSelectForSubmissions').addEventListener('change', function () {
+                    const courseId = this.value;
+                    const assignmentSelect = document.getElementById('assignmentSelectForSubmissions');
+                    document.getElementById('submissionGradingList').innerHTML = '<li class="no-data">Select an assignment to view 
+                    submissions.</li > '; // Clear submissions
+                    if (courseId) {
+                        fetchAssignmentsAndPopulateSelect(courseId, 'assignmentSelectForSubmissions');
+                        assignmentSelect.disabled = false;
+                    } else {
+                        assignmentSelect.innerHTML = '<option value="">-- Select Assignment --</option>';
+                        assignmentSelect.disabled = true;
+                    }
+                });
+                document.getElementById('assignmentSelectForSubmissions').addEventListener('change', function () {
+                    const assignmentId = this.value;
+                    if (assignmentId) {
+                        fetchSubmissionsForGrading(assignmentId);
+                    } else {
+                        document.getElementById('submissionGradingList').innerHTML = '<li class="no-data">Select an assignment to view 
+                        submissions.</li > ';
+                    }
+                });
+                document.getElementById('courseSelectForAttendance').addEventListener('change', function () {
+                    const courseId = this.value;
+                    const studentSelect = document.getElementById('studentSelectForAttendance');
+                    if (courseId) {
+                        fetchStudentsForCourse(courseId, 'studentSelectForAttendance');
+                        studentSelect.disabled = false;
+                    } else {
+                        studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
+                        studentSelect.disabled = true;
+                    }
+                });
+            }
+            document.getElementById("logoutBtn").onclick = function () {
+                if (confirm("Are you sure you want to log out?")) {
+                    makeApiCall("POST", "/api/auth/logout", null, (err, result) => {
+                        alert("You have been logged out.");
+                        window.location.href = "/login.html";
+                    });
+                }
+            };
+            window.onload = loadTeacherDashboard;
+    </script>
+</body>
+
+</html>
+Styles.css:
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teacher Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #17a2b8;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --lighter-bg: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #343a40;
+            --text-muted: #6c757d;
+            --font-primary: 'Lato', sans-serif;
+            --font-secondary: 'Poppins', sans-serif;
+            --border-radius: 6px;
+            --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+            --box-shadow-hover: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            margin: 0;
+            background-color: #f4f7f6;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--lighter-bg);
+            color: var(--text-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.7em;
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        #userInfo {
+            font-size: 0.95em;
+            color: var(--text-muted);
+            margin-right: 15px;
+        }
+
+        main {
+            padding: 30px;
+            max-width: 1300px;
+            margin: 30px auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .section {
+            background: var(--lighter-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .section h3 {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.25em;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .section h4 {
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 25px 0;
+        }
+
+        form {
+            margin-top: 15px;
+        }
+
+        #courseSelectionForAssignment,
+        #assignmentSelectionForSubmissions,
+        #courseSelectionForSubmissions,
+        #courseSelectionForAttendance,
+        #studentSelectForAttendance {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="datetime-local"],
+        textarea,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-primary);
+            font-size: 0.95em;
+            background-color: var(--lighter-bg);
+            color: var(--text-color);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg width="12" height="8" fill="%236c757d" 
+ xmlns="http://www.w3.org/2000/svg" ><path d="M6 7.4.3 1.7C-.1 1.3-.1.7.3.3s1-.4 1.4 0L6 4.6 10.3.3c.4-.4 1-.4 1.4 0s.4 1 
+ 0 1.4L6 7.4z"/></svg>');
+ background-repeat: no-repeat;
+                    background-position: right 12px center;
+                    background-size: 12px;
+                    padding-right: 35px;
+            }
+
+            select:disabled {
+                background-color: #e9ecef;
+                opacity: 0.7;
+            }
+
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: var(--border-radius);
+                cursor: pointer;
+                font-size: 0.95em;
+                font-weight: 500;
+                font-family: var(--font-secondary);
+                transition: background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+                text-transform: capitalize;
+                margin-top: 5px;
+            }
+
+            button:hover:not(:disabled) {
+                opacity: 0.85;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+            #logoutBtn {
+                background-color: var(--danger-color);
+                color: white;
+                padding: 8px 15px;
+            }
+
+            #logoutBtn:hover {
+                background-color: #c82333;
+                opacity: 1;
+            }
+
+            #createCourseForm button,
+            #createAssignmentForm button,
+            #attendanceForm button {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+            #createCourseForm button:hover:not(:disabled),
+            #createAssignmentForm button:hover:not(:disabled),
+            #attendanceForm button:hover:not(:disabled) {
+                background-color: #004085;
+                opacity: 1;
+            }
+
+            .grade-button {
+                background-color: var(--success-color);
+                color: white;
+                font-size: 0.85em;
+                padding: 5px 10px;
+                vertical-align: middle;
+            }
+
+            .grade-button:hover:not(:disabled) {
+                background-color: #218838;
+                opacity: 1;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 15px 0 0 0;
+            }
+
+            li {
+                background-color: var(--light-bg);
+                margin-bottom: 10px;
+                padding: 12px 15px;
+                border-radius: 4px;
+                border: 1px solid #e9ecef;
+                transition: background-color 0.2s ease;
+            }
+
+            li:not(.no-data):not(.loading):hover {
+                background-color: #eef1f3;
+            }
+
+            li:last-child {
+                margin-bottom: 0;
+            }
+
+            li strong {
+                color: var(--text-color);
+                font-weight: 700;
+            }
+
+            .submission-item {
+                border-left: 4px solid var(--primary-color);
+                padding-left: 15px;
+                background-color: var(--lighter-bg);
+            }
+
+            .submission-item span {
+                margin-right: 15px;
+                display: inline-block;
+                margin-bottom: 5px;
+                font-size: 0.9em;
+                color: var(--text-muted);
+            }
+
+            .submission-item span strong {
+                color: var(--text-color);
+                font-size: 1.1em;
+            }
+
+            .submission-item p {
+                margin: 10px 0 15px 0;
+                padding: 10px;
+                background-color: var(--light-bg);
+                border: 1px solid #eee;
+                border-radius: 4px;
+                font-size: 0.95em;
+                color: var(--text-color);
+                max-height: 100px;
+                overflow-y: auto;
+            }
+
+            .submission-item p em {
+                font-weight: bold;
+                color: var(--text-muted);
+                font-style: normal;
+                margin-right: 5px;
+            }
+
+            .submission-item div {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px dashed var(--border-color);
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .submission-item label {
+                display: inline-block;
+                margin-bottom: 0;
+                font-weight: normal;
+                font-size: 0.9em;
+                color: var(--text-muted);
+            }
+
+            .marks-input {
+                width: 75px !important;
+                padding: 6px 8px !important;
+                display: inline-block;
+                vertical-align: middle;
+                margin: 0 !important;
+            }
+
+            .message {
+                font-size: 0.85em;
+                margin-left: 5px;
+                vertical-align: middle;
+                display: inline-block;
+                padding: 3px 6px;
+                border-radius: 3px;
+            }
+
+            .message:empty {
+                display: none;
+            }
+
+            .message.success {
+                color: #155724;
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                font-weight: bold;
+            }
+
+            .message.error {
+                color: #721c24;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+            }
+
+            .message.loading {
+                color: var(--text-muted);
+                font-style: italic;
+                background-color: transparent;
+                border: none;
+            }
+
+            .section .error,
+            .section .success {
+                padding: 10px 15px;
+                margin-top: 15px;
+                border-radius: var(--border-radius);
+                font-size: 0.95em;
+            }
+
+            .section .error {
+                color: #721c24;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+            }
+
+            .section .success {
+                color: #155724;
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+            }
+
+            .loading,
+            .no-data {
+                color: var(--text-muted);
+                font-style: italic;
+                text-align: center;
+                padding: 20px 15px;
+            }
+
+            li.loading,
+            li.no-data {
+                border: none;
+                background-color: transparent !important;
+                text-align: center;
+                padding: 20px 0;
+            }
+
+            li.loading:hover,
+            li.no-data:hover {
+                background-color: transparent !important;
+            }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Teacher Dashboard</h1>
+        <div>
+            <span id="userInfo">Loading...</span>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </header>
+    <main>
+        <div class="dashboard-grid">
+            <div class="section" id="course-management">
+                <h3>My Courses</h3>
+                <ul id="teacherCourseList">
+                    <li class="loading">Loading courses...</li>
+                </ul>
+                <hr>
+                <h4>Create New Course</h4>
+                <form id="createCourseForm">
+                    <div>
+                        <label for="courseName">Course Name:</label>
+                        <input type="text" id="courseName" placeholder="e.g., Introduction to Programming" required>
+                    </div>
+                    <div>
+                        <label for="courseDesc">Description:</label>
+                        <textarea id="courseDesc" placeholder="Brief description of the course" required></textarea>
+                    </div>
+                    <div id="createCourseMessage" class="message"></div>
+                    <button type="submit">Create Course</button>
+                </form>
+            </div>
+            <div class="section" id="assignment-management">
+                <h3>Assignment Management</h3>
+                <div id="courseSelectionForAssignment">
+                    <label for="courseSelectForAssignment">Select Course:</label>
+                    <select id="courseSelectForAssignment" required>
+                        <option value="">-- Select a Course --</option>
+                    </select>
+                </div>
+                <hr>
+                <h4>Create New Assignment</h4>
+                <form id="createAssignmentForm">
+                    <div>
+                        <label for="assignmentTitle">Title:</label>
+                        <input type="text" id="assignmentTitle" placeholder="e.g., Homework 1" required>
+                    </div>
+                    <div>
+                        <label for="assignmentDesc">Description:</label>
+                        <textarea id="assignmentDesc" placeholder="Instructions for the assignment" required></textarea>
+                    </div>
+                    <div>
+                        <label for="assignmentDueDate">Due Date:</label>
+                        <input type="datetime-local" id="assignmentDueDate" required>
+                    </div>
+                    <div>
+                        <label for="assignmentTotalMarks">Total Marks:</label>
+                        <input type="number" id="assignmentTotalMarks" value="100" min="0" required>
+                    </div>
+                    <div id="createAssignmentMessage" class="message"></div>
+                    <button type="submit">Create Assignment</button>
+                </form>
+                <hr>
+                <h4>View Assignments</h4>
+                <ul id="courseAssignmentList">
+                    <li class="no-data">Select a course to view assignments.</li>
+                </ul>
+            </div>
+            <div class="section" id="submissions-grading">
+                <h3>Submissions & Grading</h3>
+                <div id="courseSelectionForSubmissions">
+                    <label for="courseSelectForSubmissions">Select Course:</label>
+                    <select id="courseSelectForSubmissions" required>
+                        <option value="">-- Select Course --</option>
+                    </select>
+                </div>
+                <div id="assignmentSelectionForSubmissions">
+                    <label for="assignmentSelectForSubmissions">Select Assignment:</label>
+                    <select id="assignmentSelectForSubmissions" required disabled>
+                        <option value="">-- Select Assignment --</option>
+                    </select>
+                </div>
+                <hr>
+                <h4>Student Submissions</h4>
+                <ul id="submissionGradingList">
+                    <li class="no-data">Select an assignment to view submissions.</li>
+                </ul>
+            </div>
+            <div class="section" id="mark-attendance">
+                <h3>Mark Attendance</h3>
+                <div id="courseSelectionForAttendance">
+                    <label for="courseSelectForAttendance">Select Course:</label>
+                    <select id="courseSelectForAttendance" required>
+                        <option value="">-- Select Course --</option>
+                    </select>
+                </div>
+                <hr>
+                <form id="attendanceForm">
+                    <div>
+                        <label for="studentSelectForAttendance">Select Student:</label>
+                        <select id="studentSelectForAttendance" required disabled>
+                            <option value="">-- Select Student --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="attendanceDate">Date:</label>
+                        <input type="date" id="attendanceDate" name="date" required>
+                    </div>
+                    <div>
+                        <label for="attendanceStatus">Status:</label>
+                        <select id="attendanceStatus" name="status" required>
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </div>
+                    <div id="markAttendanceMessage" class="message"></div>
+                    <button type="submit">Mark Attendance</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script>
+            let teacherCourses = [];
+            let currentUsername = '';
+            function makeApiCall(method, url, data, callback) {
+                const xhr = new XMLHttpRequest();
+                xhr.open(method, url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.withCredentials = true;
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        let responseData = null; let errorMsg = null;
+                        try { responseData = xhr.responseText ? JSON.parse(xhr.responseText) : null; } catch (e) {
+                            errorMsg = "Invalid server 
+                            response."; }
+                            if (xhr.status >= 200 && xhr.status < 300) { callback(null, responseData); }
+                            else {
+                                if (xhr.status === 401 || xhr.status === 403) {
+                                    alert("Session expired/access denied."); window.location.href =
+                                        "/login.html"; return;
+                                }
+                                errorMsg = (responseData && responseData.msg) || errorMsg || `Error ${xhr.status}`; callback(errorMsg, null);
+                            }
+                        }
+                    };
+                    xhr.onerror = function () { callback("Network error.", null); };
+                    xhr.send(data ? JSON.stringify(data) : null);
+                }
+                function formatDate(dateString) {
+                    if (!dateString) return 'N/A'; try { return new Date(dateString).toLocaleString(); } catch
+                    (e) { return dateString; }
+                }
+                function displayMessage(elementId, message, isError = false) {
+                    const el = document.getElementById(elementId);
+                    if (el) {
+                        el.textContent = message;
+                        el.className = isError ? 'error message' : 'success message';
+                    }
+                }
+                function populateSelect(selectElementId, optionsData, valueField, textField, prompt = "-- Select --") {
+                    const select = document.getElementById(selectElementId);
+                    if (!select) return;
+                    select.innerHTML = `<option value="">${prompt}</option>`;
+                    if (optionsData && optionsData.length > 0) {
+                        optionsData.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item[valueField];
+                            option.textContent = item[textField];
+                            select.appendChild(option);
+                        });
+                        select.disabled = false;
+                    } else {
+                        select.disabled = true;
+                    }
+                }
+                function loadTeacherDashboard() {
+                    makeApiCall("GET", "/api/auth/session", null, (err, sessionData) => {
+                        const userInfo = document.getElementById("userInfo");
+                        if (err || !sessionData || !sessionData.user) {
+                            userInfo.textContent = "Welcome!";
+                        } else {
+                            currentUsername = sessionData.user.username;
+                            userInfo.textContent = `Welcome, ${currentUsername}! (Teacher)`;
+                            fetchTeacherCoursesAndPopulateSelects();
+                        }
+                    });
+                }
+                function fetchTeacherCoursesAndPopulateSelects() {
+                    makeApiCall("GET", "/api/teacher/courses", null, (err, courses) => {
+                        const listElement = document.getElementById("teacherCourseList");
+                        if (err) {
+                            listElement.innerHTML = `<li class="error">Error loading courses: ${err}</li>`;
+                        } else {
+                            teacherCourses = courses || [];
+                            renderList("teacherCourseList", teacherCourses, (course) => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `<strong>${course.name}</strong> - Created: ${formatDate(course.createdAt)}`;
+                                return li;
+                            }, "You have not created any courses yet.");
+                            populateSelect("courseSelectForAssignment", teacherCourses, '_id', 'name', '-- Select Course for Assignment --');
+                            populateSelect("courseSelectForSubmissions", teacherCourses, '_id', 'name', '-- Select Course for Submissions --');
+                            populateSelect("courseSelectForAttendance", teacherCourses, '_id', 'name', '-- Select Course for Attendance --');
+                            setupCourseSelectionListeners();
+                        }
+                    });
+                }
+                document.getElementById("createCourseForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const name = document.getElementById("courseName").value;
+                    const description = document.getElementById("courseDesc").value;
+                    const msgDiv = "createCourseMessage";
+                    displayMessage(msgDiv, "Creating course...", false);
+                    makeApiCall("POST", "/api/teacher/courses", { name, description }, (err, result) => {
+                        if (err) {
+                            displayMessage(msgDiv, `Error: ${err}`, true);
+                        } else {
+                            displayMessage(msgDiv, result.msg || "Course created!", false);
+                            document.getElementById("createCourseForm").reset();
+                            fetchTeacherCoursesAndPopulateSelects();
+                        }
+                    });
+                });
+                function fetchAssignmentsForCourse(courseId, listElementId) {
+                    makeApiCall("GET", `/api/courses/${courseId}/assignments`, null, (err, assignments) => {
+                        const listElement = document.getElementById(listElementId);
+                        if (err) {
+                            listElement.innerHTML = `<li class="error">Error loading assignments: ${err}</li>`;
+                        } else {
+                            renderList(listElementId, assignments, (assign) => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `
+<strong>${assign.title}</strong> - Due: ${formatDate(assign.dueDate)}
+<p>${assign.description || 'No description'}</p>
+`;
+                                return li;
+                            }, "No assignments found for this course.");
+                        }
+                    });
+                }
+                function fetchAssignmentsAndPopulateSelect(courseId, selectElementId) {
+                    makeApiCall("GET", `/api/courses/${courseId}/assignments`, null, (err, assignments) => {
+                        const selectEl = document.getElementById(selectElementId);
+                        if (err || !assignments) {
+                            console.error("Error fetching assignments for select:", err);
+                            populateSelect(selectElementId, [], '_id', 'title', '-- Error Loading Assignments --');
+                            selectEl.disabled = true;
+                        } else {
+                            populateSelect(selectElementId, assignments, '_id', 'title', '-- Select Assignment --');
+                            selectEl.disabled = assignments.length === 0;
+                        }
+                    });
+                }
+                document.getElementById("createAssignmentForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const courseId = document.getElementById("courseSelectForAssignment").value;
+                    if (!courseId) {
+                        displayMessage("createAssignmentMessage", "Please select a course first.", true);
+                        return;
+                    }
+                    const title = document.getElementById("assignmentTitle").value;
+                    const description = document.getElementById("assignmentDesc").value;
+                    const dueDate = document.getElementById("assignmentDueDate").value;
+                    const totalMarks = document.getElementById("assignmentTotalMarks").value;
+                    const msgDiv = "createAssignmentMessage";
+                    displayMessage(msgDiv, "Creating assignment...", false);
+                    makeApiCall("POST", `/api/teacher/courses/${courseId}/assignments`, { title, description, dueDate, totalMarks }, (err,
+                        result) => {
+                        if (err) {
+                            displayMessage(msgDiv, `Error: ${err}`, true);
+                        } else {
+                            displayMessage(msgDiv, result.msg || "Assignment created!", false);
+                            document.getElementById("createAssignmentForm").reset();
+                            const selectedCourseList = document.getElementById("courseSelectForAssignment").value;
+                            if (selectedCourseList === courseId) {
+                                fetchAssignmentsForCourse(courseId, 'courseAssignmentList');
+                            }
+                        }
+                    });
+                });
+                function renderList(listElementId, data, renderItemFn, noDataMsg = "No data available.") {
+                    const listElement = document.getElementById(listElementId);
+                    if (!listElement) {
+                        console.error("renderList: Element not found:", listElementId);
+                        return;
+                    }
+                    listElement.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        listElement.innerHTML = `<li class="no-data">${noDataMsg}</li>`;
+                    } else {
+                        data.forEach(item => {
+                            const li = renderItemFn(item);
+                            if (li instanceof HTMLElement) {
+                                listElement.appendChild(li);
+                            } else {
+                                console.warn("renderItemFn did not return a valid HTML element for item:", item);
+                            }
+                        });
+                    }
+                }
+                function fetchSubmissionsForGrading(assignmentId) {
+                    const listElement = document.getElementById("submissionGradingList");
+                    listElement.innerHTML = '<li class="loading">Loading submissions...</li>';
+                    makeApiCall("GET", `/api/teacher/assignments/${assignmentId}/submissions`, null, (err, submissions) => {
+                        if (err) {
+                            listElement.innerHTML = `<li class="error">Error loading submissions: ${err}</li>`;
+                        } else {
+                            renderList("submissionGradingList", submissions, (sub) => {
+                                const li = document.createElement('li');
+                                li.classList.add('submission-item');
+                                li.id = `submission-${sub._id}`;
+                                const studentName = sub.student ? (sub.student.name || sub.student.username) : 'Unknown Student';
+                                const currentMark = sub.mark ? sub.mark.marks : '';
+                                const totalMarks = sub.mark ? sub.mark.totalMarks : (sub.assignment ? sub.assignment.totalMarks : 100);
+                                li.innerHTML = `
+<span><strong>${studentName}</strong></span>
+<span>Submitted: ${formatDate(sub.submittedAt)}</span>
+<p><em>Content:</em> ${sub.content ? sub.content.substring(0, 150) + (sub.content.length > 150 ? '...' : '') : '(No 
+Content)'}</p>
+                                < div >
+<label for="marks-${sub._id}">Mark:</label>
+<input type="number" class="marks-input" id="marks-${sub._id}" value="${currentMark}" placeholder="-" min="0" 
+max="${totalMarks}"> / ${totalMarks}
+<button class="grade-button" onclick="gradeSubmission('${sub._id}', '${totalMarks}')">
+${sub.mark ? 'Update' : 'Grade'}
+</button>
+<span id="grade-message-${sub._id}" class="message" style="margin-left: 10px;"></span>
+</div>
+                            `;
+return li;
+}, "No submissions found for this assignment.");
+}
+});
+}
+function gradeSubmission(submissionId, totalMarks) {
+const marksInput = document.getElementById(`marks - ${ submissionId } `);
+const marks = marksInput.value;
+const messageSpan = document.getElementById(`grade - message - ${ submissionId } `);
+if (marks === '' || isNaN(marks)) {
+messageSpan.textContent = "Invalid mark";
+messageSpan.className = 'error message';
+return;
+}
+const marksNum = Number(marks);
+if (marksNum < 0 || marksNum > Number(totalMarks)) {
+messageSpan.textContent = `Mark must be 0 - ${ totalMarks } `;
+messageSpan.className = 'error message';
+return;
+}
+messageSpan.textContent = "Saving...";
+messageSpan.className = 'loading message';
+makeApiCall("POST", `/ api / teacher / submissions / ${ submissionId }/mark`, { marks: marksNum }, (err, result) => {
+                            if (err) {
+                                messageSpan.textContent = `Error: ${err}`;
+                                messageSpan.className = 'error message';
+                            } else {
+                                messageSpan.textContent = "Saved!";
+                                messageSpan.className = 'success message';
+                                const button = marksInput.nextElementSibling;
+                                if (button) button.textContent = 'Update';
+                                setTimeout(() => { messageSpan.textContent = ''; messageSpan.className = 'message'; }, 3000);
+                            }
+                        });
+                }
+                function fetchStudentsForCourse(courseId, selectElementId) {
+                    makeApiCall("GET", `/api/teacher/courses/${courseId}/students`, null, (err, students) => {
+                        const selectEl = document.getElementById(selectElementId);
+                        if (err || !students) {
+                            console.error("Error fetching students for select:", err);
+                            populateSelect(selectElementId, [], '_id', 'username', '-- Error Loading Students --');
+                            selectEl.disabled = true;
+                        } else {
+                            populateSelect(selectElementId, students, 'username', 'username', '-- Select Student --'); // Use username as value
+                            selectEl.disabled = students.length === 0;
+                        }
+                    });
+                }
+                document.getElementById("attendanceForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const courseId = document.getElementById("courseSelectForAttendance").value;
+                    const studentUsername = document.getElementById("studentSelectForAttendance").value;
+                    const date = document.getElementById("attendanceDate").value;
+                    const status = document.getElementById("attendanceStatus").value;
+                    const msgDiv = "markAttendanceMessage";
+                    if (!courseId || !studentUsername || !date || !status) {
+                        displayMessage(msgDiv, "Please fill in all fields.", true);
+                        return;
+                    }
+                    displayMessage(msgDiv, "Marking attendance...", false);
+                    makeApiCall("POST", `/api/teacher/courses/${courseId}/attendance`, { studentUsername, date, status }, (err, result) => {
+                        if (err) {
+                            displayMessage(msgDiv, `Error: ${err}`, true);
+                        } else {
+                            displayMessage(msgDiv, result.msg || "Attendance marked!", false);
+                        }
+                    });
+                });
+                function setupCourseSelectionListeners() {
+                    document.getElementById('courseSelectForAssignment').addEventListener('change', function () {
+                        const courseId = this.value;
+                        if (courseId) {
+                            fetchAssignmentsForCourse(courseId, 'courseAssignmentList');
+                        } else {
+                            document.getElementById('courseAssignmentList').innerHTML = '<li class="no-data">Select a course to view 
+                            assignments.</li > ';
+                        }
+                    });
+                    document.getElementById('courseSelectForSubmissions').addEventListener('change', function () {
+                        const courseId = this.value;
+                        const assignmentSelect = document.getElementById('assignmentSelectForSubmissions');
+                        document.getElementById('submissionGradingList').innerHTML = '<li class="no-data">Select an assignment to view 
+                        submissions.</li > '; // Clear submissions
+                        if (courseId) {
+                            fetchAssignmentsAndPopulateSelect(courseId, 'assignmentSelectForSubmissions');
+                            assignmentSelect.disabled = false;
+                        } else {
+                            assignmentSelect.innerHTML = '<option value="">-- Select Assignment --</option>';
+                            assignmentSelect.disabled = true;
+                        }
+                    });
+                    document.getElementById('assignmentSelectForSubmissions').addEventListener('change', function () {
+                        const assignmentId = this.value;
+                        if (assignmentId) {
+                            fetchSubmissionsForGrading(assignmentId);
+                        } else {
+                            document.getElementById('submissionGradingList').innerHTML = '<li class="no-data">Select an assignment to view 
+                            submissions.</li > ';
+                        }
+                    });
+                    document.getElementById('courseSelectForAttendance').addEventListener('change', function () {
+                        const courseId = this.value;
+                        const studentSelect = document.getElementById('studentSelectForAttendance');
+                        if (courseId) {
+                            fetchStudentsForCourse(courseId, 'studentSelectForAttendance');
+                            studentSelect.disabled = false;
+                        } else {
+                            studentSelect.innerHTML = '<option value="">-- Select Student --</option>';
+                            studentSelect.disabled = true;
+                        }
+                    });
+                }
+                document.getElementById("logoutBtn").onclick = function () {
+                    if (confirm("Are you sure you want to log out?")) {
+                        makeApiCall("POST", "/api/auth/logout", null, (err, result) => {
+                            alert("You have been logged out.");
+                            window.location.href = "/login.html";
+                        });
+                    }
+                };
+                window.onload = loadTeacherDashboard;
+    </script>
+</body>
+
+</html>
